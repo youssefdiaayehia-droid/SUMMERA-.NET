@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SUMMERA.Application.DTOs.Hotels.HotelDto>
+
+@{
+    ViewData["Title"] = "Home";
+    var hotels = Model.ToList();
+}
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+
+<!-- HERO -->
+<section class="Hero">
+    <div class="hero-text">
+        <h1>Find Your Perfect<br> Summer Stay</h1>
+        <h2>Luxury Hotels Across Egypt</h2>
+        <p>Discover top hotels and<br> beach destinations for your next vacation.</p>
+        <div class="hero-buttons">
+            <a asp-controller="Hotels" asp-action="Index" class="hero-btn">Explore Hotels</a>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED HOTELS -->
+<section class="featured-hotels">
+    <h2>Featured Hotels</h2>
+
+    <div class="hotels-carousel">
+        @foreach (var hotel in hotels)
+        {
+            <div class="carousel-card" data-description="@hotel.Description" data-hotel-id="@hotel.Id">
+                <img src="@hotel.MainImageUrl" alt="@hotel.Name" />
+                <h3>@hotel.Name</h3>
+            </div>
+        }
+    </div>
+
+    <!-- Single dynamic modal -->
+    <div class="lay-for-hotel1" id="hotel-modal">
+        <div class="card-modal-content">
+            <p id="hotel-modal-text"></p>
+            <button class="card-close-btn" id="hotel-modal-close">Close</button>
+        </div>
+    </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us">
+    <div class="why-us-container">
+        <div class="why-us-text">
+            <h2>Why Book With SUMMERA?</h2>
+            <p>Top Luxury Hotels Across Egypt's Destinations</p>
+        </div>
+        <div class="why-us-cards">
+            <div class="cards-container">
+                <div class="best-deals">
+                    <span class="card-icon">🏷️</span>
+                    <h3>Best Deals</h3><br>
+                    <p>Luxury hotels with guaranteed best available rates.</p>
+                </div>
+            </div>
+            <div class="cards-container">
+                <div class="instant-booking">
+                    <span class="card-icon">💳</span>
+                    <h3>Instant Booking</h3><br>
+                    <p>Seamless, fast, and 100% secure booking process.</p>
+                </div>
+            </div>
+            <div class="cards-container">
+                <div class="Support">
+                    <span class="card-icon">🎧</span>
+                    <h3>24/7 Support</h3><br>
+                    <p>Our dedicated team is available around the clock for you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

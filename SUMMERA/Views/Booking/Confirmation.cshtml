@@ -1,0 +1,60 @@
+﻿@model SUMMERA.Application.DTOs.Bookings.BookingDto
+
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/booking.css" asp-append-version="true" />
+}
+
+<section class="Hero">
+    <h1>C<span class="login-o"></span>NGRATS!</h1>
+    <p>Your booking has been confirmed</p>
+</section>
+
+<div class="confirmation-box">
+    <div class="confirmation-icon">✅</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Thank you for choosing SUMMERA. Your reservation is confirmed.</p>
+
+    <div class="confirmation-details">
+        <div class="detail-row">
+            <span>Booking Reference</span>
+            <strong>@Model.BookingReference</strong>
+        </div>
+        <div class="detail-row">
+            <span>Hotel</span>
+            <strong>@Model.HotelName</strong>
+        </div>
+        <div class="detail-row">
+            <span>Room Type</span>
+            <strong>@Model.RoomType</strong>
+        </div>
+        <div class="detail-row">
+            <span>Check-in</span>
+            <strong>@Model.CheckInDate.ToString("dd MMM yyyy")</strong>
+        </div>
+        <div class="detail-row">
+            <span>Check-out</span>
+            <strong>@Model.CheckOutDate.ToString("dd MMM yyyy")</strong>
+        </div>
+        <div class="detail-row">
+            <span>Guests</span>
+            <strong>@Model.NumberOfGuests</strong>
+        </div>
+        <div class="detail-row">
+            <span>Nights</span>
+            <strong>@Model.NumberOfNights</strong>
+        </div>
+        <div class="detail-row total">
+            <span>Total Paid</span>
+            <strong>$@Model.TotalPrice.ToString("0.00")</strong>
+        </div>
+    </div>
+
+    <div class="confirmation-actions">
+        <a asp-action="MyBookings" class="submit-btn">View My Bookings</a>
+        <a asp-controller="Hotels" asp-action="Index" class="btn-secondary">Browse More Hotels</a>
+    </div>
+</div>

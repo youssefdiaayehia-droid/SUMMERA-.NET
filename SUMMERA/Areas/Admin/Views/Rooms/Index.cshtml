@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SUMMERA.Domain.Entities.Room>
+
+@{
+    ViewData["Title"] = "Manage Rooms";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>🛏️ Rooms</h1>
+        <p>Manage all rooms across hotels</p>
+    </div>
+    <a asp-action="Create" class="admin-btn admin-btn-primary">+ Add New Room</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="admin-alert admin-alert-success">✅ @TempData["Success"]</div>
+}
+
+<div class="admin-table-wrapper">
+    @if (Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Room #</th>
+                    <th>Type</th>
+                    <th>Hotel</th>
+                    <th>Price/Night</th>
+                    <th>Capacity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var room in Model)
+                {
+                    <tr>
+                        <td>@room.RoomNumber</td>
+                        <td>@room.RoomType</td>
+                        <td>@room.Hotel?.Name</td>
+                        <td>$@room.PricePerNight.ToString("0.00")</td>
+                        <td>@room.Capacity guests</td>
+                        <td style="display: flex; gap: 0.5rem;">
+                            <a asp-action="Edit" asp-route-id="@room.Id" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</a>
+                            <form asp-action="Delete" asp-route-id="@room.Id" method="post" onsubmit="return confirm('Delete this room?');" style="display:inline;">
+                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No rooms found. Add your first room!</p>
+    }
+</div>

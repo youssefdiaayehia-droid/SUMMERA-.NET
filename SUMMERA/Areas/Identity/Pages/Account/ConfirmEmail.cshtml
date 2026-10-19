@@ -1,0 +1,23 @@
+@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Email Confirmation";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/identity.css" asp-append-version="true" />
+}
+
+<div class="background"><div class="bg-overlay"></div></div>
+
+<div class="identity-wrapper">
+    <div class="identity-card" style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">✉️</div>
+        <h1>@ViewData["Title"]</h1>
+        <p class="identity-subtitle">@Model.StatusMessage</p>
+
+        <div class="identity-links">
+            <a asp-page="./Login">Back to Login</a>
+        </div>
+    </div>
+</div>

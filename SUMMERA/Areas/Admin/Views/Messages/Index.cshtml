@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SUMMERA.Domain.Entities.ContactMessage>
+
+@{
+    ViewData["Title"] = "Manage Messages";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>✉️ Messages</h1>
+        <p>Inbox from the Contact Us page</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="admin-alert admin-alert-success">✅ @TempData["Success"]</div>
+}
+
+<div class="admin-table-wrapper">
+    @if (Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>Subject / Message</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var msg in Model)
+                {
+                    <tr style="@(msg.IsRead ? "" : "background: rgba(2, 132, 199, 0.05);")">
+                        <td>
+                            <div style="font-weight: 600;">@msg.Name</div>
+                            <div style="font-size: 0.8rem; color: #94a3b8;">@msg.Email</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; margin-bottom: 4px;">@msg.Subject</div>
+                            <div style="font-size: 0.9rem; color: #cbd5e1;">@msg.Message</div>
+                        </td>
+                        <td>@msg.CreatedAt.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>
+                            @if (msg.IsRead)
+                            {
+                                <span class="admin-badge badge-secondary">Read</span>
+                            }
+                            else
+                            {
+                                <span class="admin-badge badge-warning">Unread</span>
+                            }
+                        </td>
+                        <td style="display: flex; gap: 0.5rem;">
+                            @if (!msg.IsRead)
+                            {
+                                <form asp-action="MarkAsRead" asp-route-id="@msg.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm">Mark Read</button>
+                                </form>
+                            }
+                            <form asp-action="Delete" asp-route-id="@msg.Id" method="post" onsubmit="return confirm('Delete this message?');" style="display:inline;">
+                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="padding: 2rem; text-align: center; color: #94a3b8;">Inbox is empty.</p>
+    }
+</div>

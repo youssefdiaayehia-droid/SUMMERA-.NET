@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SUMMERA.Application/SUMMERA.Application.csproj" />
+  <Project Path="SUMMERA.Domain/SUMMERA.Domain.csproj" />
+  <Project Path="SUMMERA.Infrastructure/SUMMERA.Infrastructure.csproj" />
+  <Project Path="SUMMERA/SUMMERA.csproj" />
+</Solution>

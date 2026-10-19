@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+
+<div class="error-container">
+    <div class="error-card">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-heading">Page Not Found</h2>
+        <p class="error-subtitle">
+            Oops! The page you're looking for doesn't exist or has been moved.
+            Let's get you back on track.
+        </p>
+
+        <div class="action-buttons">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                🏠 Go Home
+            </a>
+            <a asp-controller="Hotels" asp-action="Index" class="btn btn-secondary">
+                🏨 Browse Hotels
+            </a>
+        </div>
+    </div>
+</div>

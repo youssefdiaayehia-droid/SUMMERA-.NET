@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SUMMERA.Domain.Entities.Hotel>
+
+@{
+    ViewData["Title"] = "Manage Hotels";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>🏨 Hotels</h1>
+        <p>Manage all hotels in the system</p>
+    </div>
+    <a asp-action="Create" class="admin-btn admin-btn-primary">+ Add New Hotel</a>
+</div>
+
+<div class="admin-table-wrapper">
+    @if (Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Stars</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hotel in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(hotel.MainImageUrl))
+                            {
+                                <img src="@hotel.MainImageUrl" alt="@hotel.Name" />
+                            }
+                            else
+                            {
+                                <span style="color: #64748b;">No image</span>
+                            }
+                        </td>
+                        <td>@hotel.Name</td>
+                        <td>@hotel.City?.Name</td>
+                        <td>@hotel.StarRating ⭐</td>
+                        <td>$@hotel.StartingPrice.ToString("0.00")</td>
+                        <td style="display: flex; gap: 0.5rem;">
+                            <a asp-action="Edit" asp-route-id="@hotel.Id" class="admin-btn admin-btn-secondary admin-btn-sm">Edit</a>
+                            <form asp-action="Delete" asp-route-id="@hotel.Id" method="post" onsubmit="return confirm('Are you sure?');" style="display:inline;">
+                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No hotels found. Add your first hotel!</p>
+    }
+</div>

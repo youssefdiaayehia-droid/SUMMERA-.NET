@@ -1,0 +1,133 @@
+﻿@model SUMMERA.ViewModels.BookingFormViewModel
+
+@{
+    ViewData["Title"] = "Book Room";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/booking.css" asp-append-version="true" />
+}
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+<section class="Hero">
+    <h1>BOOK<span class="login-o"></span>NG</h1>
+    <p>Complete your reservation in a few steps</p>
+</section>
+
+<div class="booking-wrapper">
+
+    <!-- LEFT: Booking Form -->
+    <div class="booking-form-box">
+        <h2>Reservation Details</h2>
+
+        <form asp-action="Create" method="post" id="bookingForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Booking.RoomId" />
+
+            <div class="form-group">
+                <label asp-for="Booking.CheckInDate">Check-in Date</label>
+                <input asp-for="Booking.CheckInDate" type="date" id="checkIn"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Booking.CheckInDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.CheckOutDate">Check-out Date</label>
+                <input asp-for="Booking.CheckOutDate" type="date" id="checkOut"
+                       min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Booking.CheckOutDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.NumberOfGuests">Number of Guests</label>
+                <input asp-for="Booking.NumberOfGuests" type="number" min="1"
+                       max="@Model.Room.Capacity" id="guests" />
+                <span asp-validation-for="Booking.NumberOfGuests" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.SpecialRequests">Special Requests (optional)</label>
+                <textarea asp-for="Booking.SpecialRequests"
+                          placeholder="Any special requests? (e.g., high floor, late check-in)"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Confirm Booking</button>
+        </form>
+    </div>
+
+    <!-- RIGHT: Room Summary -->
+    <div class="booking-summary">
+        <h2>Room Summary</h2>
+
+        <div class="summary-room">
+            <h3>@Model.Room.RoomType <small>#@Model.Room.RoomNumber</small></h3>
+            <p>@Model.Room.Description</p>
+            <p>&#128101; Up to @Model.Room.Capacity guests</p>
+        </div>
+
+        <hr />
+
+        <div class="summary-line">
+            <span>Price per night</span>
+            <strong>$@Model.Room.PricePerNight</strong>
+        </div>
+
+        <div class="summary-line">
+            <span>Nights</span>
+            <strong id="nights-display">0</strong>
+        </div>
+
+        <div class="summary-line">
+            <span>Subtotal</span>
+            <strong id="subtotal-display">$0.00</strong>
+        </div>
+
+        <div class="summary-line">
+            <span>Tax (14%)</span>
+            <strong id="tax-display">$0.00</strong>
+        </div>
+
+        <hr />
+
+        <div class="summary-line total">
+            <span>Total</span>
+            <strong id="total-display">$0.00</strong>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const pricePerNight = @Model.Room.PricePerNight;
+        const taxRate = 0.14;
+
+        function updateSummary() {
+            const checkIn = document.getElementById("checkIn").value;
+            const checkOut = document.getElementById("checkOut").value;
+
+            if (!checkIn || !checkOut) return;
+
+            const inDate = new Date(checkIn);
+            const outDate = new Date(checkOut);
+            const nights = Math.max(0, Math.floor((outDate - inDate) / (1000 * 60 * 60 * 24)));
+
+            document.getElementById("nights-display").textContent = nights;
+
+            const subtotal = nights * pricePerNight;
+            const tax = subtotal * taxRate;
+            const total = subtotal + tax;
+
+            document.getElementById("subtotal-display").textContent = "$" + subtotal.toFixed(2);
+            document.getElementById("tax-display").textContent = "$" + tax.toFixed(2);
+            document.getElementById("total-display").textContent = "$" + total.toFixed(2);
+        }
+
+        document.getElementById("checkIn").addEventListener("change", updateSummary);
+        document.getElementById("checkOut").addEventListener("change", updateSummary);
+
+        updateSummary();
+    </script>
+}

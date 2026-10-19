@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SUMMERA.Application.DTOs.Bookings.BookingDto>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/booking.css" asp-append-version="true" />
+}
+
+<section class="Hero">
+    <h1>MY B<span class="login-o"></span>OKINGS</h1>
+    <p>Manage your reservations</p>
+</section>
+
+<div class="mybookings-wrapper">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert-success">✅ @TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-error">❌ @TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <h3>No Bookings Yet</h3>
+            <p>You haven't made any bookings. Start exploring our hotels!</p>
+            <a asp-controller="Hotels" asp-action="Index" class="submit-btn">Browse Hotels</a>
+        </div>
+    }
+    else
+    {
+        foreach (var booking in Model)
+        {
+            <div class="booking-card">
+                <div class="booking-card-header">
+                    <div>
+                        <h3>@booking.HotelName</h3>
+                        <p class="room-type">@booking.RoomType</p>
+                    </div>
+                    <div class="status-badge status-@booking.Status.ToString().ToLower()">
+                        @booking.Status
+                    </div>
+                </div>
+
+                <div class="booking-card-body">
+                    <div class="booking-info">
+                        <span>Reference</span>
+                        <strong>@booking.BookingReference</strong>
+                    </div>
+                    <div class="booking-info">
+                        <span>Check-in</span>
+                        <strong>@booking.CheckInDate.ToString("dd MMM yyyy")</strong>
+                    </div>
+                    <div class="booking-info">
+                        <span>Check-out</span>
+                        <strong>@booking.CheckOutDate.ToString("dd MMM yyyy")</strong>
+                    </div>
+                    <div class="booking-info">
+                        <span>Nights</span>
+                        <strong>@booking.NumberOfNights</strong>
+                    </div>
+                    <div class="booking-info">
+                        <span>Guests</span>
+                        <strong>@booking.NumberOfGuests</strong>
+                    </div>
+                    <div class="booking-info total">
+                        <span>Total</span>
+                        <strong>$@booking.TotalPrice.ToString("0.00")</strong>
+                    </div>
+                </div>
+
+                @if (booking.Status == SUMMERA.Domain.Enums.BookingStatus.Pending ||
+                     booking.Status == SUMMERA.Domain.Enums.BookingStatus.Confirmed)
+                {
+                    <div class="booking-card-footer">
+                        <form asp-action="Cancel" asp-route-id="@booking.Id" method="post"
+                              onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                            <button type="submit" class="cancel-btn">Cancel Booking</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

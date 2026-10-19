@@ -1,0 +1,72 @@
+@ {
+    ViewData ["Title"] = "About Us";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
+}
+
+<!-- BACKGROUND -->
+<div class="background" >
+<div class="bg-overlay" > </div >
+</div >
+<!-- HERO -->
+<section class="hero" >
+<div class="hero-container" >
+<h1 > About SUMMERA</h1 >
+<p > Redefining Luxury Hotel Bookings in Egypt</p >
+</div >
+</section >
+<!-- OUR STORY -->
+<section class="story" >
+<div class="the-story" >
+<h3 > Our Story</h3 >
+<p > Founded to simplify luxury stays across Egypt, SUMMERA connects travelers with handpicked hotels in Dahab, Soma Bay, and Cairo.</p >
+</div >
+<div class="story-img" >
+<img src="~/images/Hotels/Cairo Grand Hotel.png" alt="Cairo Grand Hotel" / >
+</div >
+</section >
+<!-- MISSION & VISION -->
+<section class="mav" >
+<div class="mav-card" >
+<span class="mav-icon" > 🎯</span >
+<h3 > Our Mission</h3 >
+<p > To provide a seamless and secure booking experience for stays.</p >
+</div >
+<div class="mav-card" >
+<span class="mav-icon" > 👁️</span >
+<h3 > Our Vision</h3 >
+<p > To become the leading digital portal for luxury Egyptian travel.</p >
+</div >
+</section >
+<!-- DATA STATS -->
+<section class="data" >
+<div class="data-cards" >
+<h2 > [50 + ]</h2 >
+<h3 > Luxury Hotels</h3 >
+</div >
+<div class="data-cards" >
+<h2 > [100%]</h2 >
+<h3 > Guaranteed Rates</h3 >
+</div >
+<div class="data-cards" >
+<h2 > [10k + ]</h2 >
+<h3 > Happy Travelers</h3 >
+</div >
+<div class="data-cards" >
+<h2 > [24/7]</h2 >
+<h3 > Dedicated Support</h3 >
+</div >
+</section >
+<!-- EXPLORE CTA -->
+<section class="explore" >
+<div class="explore-text" >
+<h2 > Ready for Your Next Escape?</h2 >
+<p > Explore our curated list of luxury hotels and plan your stay today.</p >
+</div >
+<div class="explore-buttons" >
+<a asp-controller="Hotels" asp-action="Index" class="explore-btn" > Explore Hotels</a >
+<a asp-controller="Contact" asp-action="Index" class="explore-btn" > Contact Us</a >
+</div >
+</section >

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="admin-body">
+
+    <!-- ADMIN NAVBAR -->
+    <nav class="admin-navbar">
+        <div class="admin-navbar-left">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="admin-logo">
+                <span class="icon"></span> SUMMERA <small>Admin</small>
+            </a>
+        </div>
+        <div class="admin-navbar-right">
+            <a asp-controller="Home" asp-action="Index" target="_blank" class="admin-nav-link">
+                🌐 View Site
+            </a>
+            <span class="admin-user">👤 @User.Identity?.Name</span>
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post" style="margin:0;">
+                <button type="submit" class="admin-logout-btn">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- ADMIN LAYOUT -->
+    <div class="admin-layout">
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="sidebar-link">📊 Dashboard</a>
+            <a asp-area="Admin" asp-controller="Hotels" asp-action="Index" class="sidebar-link">🏨 Hotels</a>
+            <a asp-area="Admin" asp-controller="Rooms" asp-action="Index" class="sidebar-link">🛏️ Rooms</a>
+            <a asp-area="Admin" asp-controller="Bookings" asp-action="Index" class="sidebar-link">📅 Bookings</a>
+            <a asp-area="Admin" asp-controller="Messages" asp-action="Index" class="sidebar-link">✉️ Messages</a>
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="sidebar-link">👥 Users</a>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<SUMMERA.Infrastructure.Identity.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Manage Users";
+    var userRoles = ViewBag.UserRoles as Dictionary<string, bool>;
+    var currentUserId = ViewBag.CurrentUserId as string;
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>👥 Users</h1>
+        <p>Manage all registered users</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="admin-alert admin-alert-success">✅ @TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="admin-alert admin-alert-error">❌ @TempData["Error"]</div>
+}
+
+<div class="admin-table-wrapper">
+    @if (Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Joined</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    var isAdmin = userRoles != null && userRoles.ContainsKey(user.Id) && userRoles[user.Id];
+                    var isSelf = user.Id == currentUserId;
+
+                    <tr>
+                        <td>
+                            <strong>@user.FullName</strong>
+                            @if (isSelf)
+                            {
+                                <span style="color: #38bdf8; font-size: 0.8rem; margin-left: 5px;">(You)</span>
+                            }
+                        </td>
+                        <td>@user.Email</td>
+                        <td>@user.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td>
+                            @if (isAdmin)
+                            {
+                                <span class="admin-badge badge-success">Admin</span>
+                            }
+                            else
+                            {
+                                <span class="admin-badge badge-info">Customer</span>
+                            }
+                        </td>
+                        <td>
+                            @if (isSelf || user.Email == "admin@summera.com")
+                            {
+                                <span style="color: #64748b; font-size: 0.85rem;">Protected</span>
+                            }
+                            else
+                            {
+                                <form asp-action="ToggleAdmin" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <input type="hidden" name="makeAdmin" value="@(isAdmin ? "false" : "true")" />
+
+                                    @if (isAdmin)
+                                    {
+                                        <button type="submit" class="admin-btn admin-btn-secondary admin-btn-sm" onclick="return confirm('Remove Admin privileges?');">Make Customer</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm" onclick="return confirm('Promote to Admin?');">Make Admin</button>
+                                    }
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No users found.</p>
+    }
+</div>

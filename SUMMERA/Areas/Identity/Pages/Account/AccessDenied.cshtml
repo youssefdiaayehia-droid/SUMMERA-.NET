@@ -1,0 +1,25 @@
+@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/identity.css" asp-append-version="true" />
+}
+
+<div class="background"><div class="bg-overlay"></div></div>
+
+<div class="identity-wrapper">
+    <div class="identity-card" style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🚫</div>
+        <h1>Access Denied</h1>
+        <p class="identity-subtitle">
+            You don't have permission to access this page.
+        </p>
+
+        <div class="identity-links">
+            <a asp-controller="Home" asp-action="Index">Go to Homepage</a>
+        </div>
+    </div>
+</div>

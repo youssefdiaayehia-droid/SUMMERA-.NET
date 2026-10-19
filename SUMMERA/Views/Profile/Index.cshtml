@@ -1,0 +1,61 @@
+﻿@model SUMMERA.Infrastructure.Identity.ApplicationUser
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/booking.css" asp-append-version="true" />
+}
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+
+<!-- HERO -->
+<section class="Hero">
+    <h1>MY PR<span class="login-o"></span>FILE</h1>
+    <p>Manage your account information</p>
+</section>
+
+<div class="mybookings-wrapper">
+
+    <!-- User Info Card -->
+    <div class="booking-card">
+        <div class="booking-card-header">
+            <div>
+                <h3>@Model.FullName</h3>
+                <p class="room-type">@Model.Email</p>
+            </div>
+            <div class="status-badge status-confirmed">
+                @(User.IsInRole("Admin") ? "Admin" : "Customer")
+            </div>
+        </div>
+
+        <div class="booking-card-body">
+            <div class="booking-info">
+                <span>Full Name</span>
+                <strong>@Model.FullName</strong>
+            </div>
+            <div class="booking-info">
+                <span>Email</span>
+                <strong>@Model.Email</strong>
+            </div>
+            <div class="booking-info">
+                <span>Phone</span>
+                <strong>@(string.IsNullOrEmpty(Model.PhoneNumber) ? "—" : Model.PhoneNumber)</strong>
+            </div>
+            <div class="booking-info">
+                <span>Member Since</span>
+                <strong>@Model.CreatedAt.ToString("MMM yyyy")</strong>
+            </div>
+        </div>
+
+        <div class="booking-card-footer">
+            <a asp-action="MyBookings" class="submit-btn" style="width: auto; padding: 0.6rem 1.5rem;">
+                View My Bookings
+            </a>
+        </div>
+    </div>
+</div>

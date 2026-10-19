@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - SUMMERA</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/identity.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <!-- CURSOR EFFECT -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- NAV BAR -->
+    <nav class="nav-bar">
+        <a asp-controller="Home" asp-action="Index" class="Logo">
+            <span class="icon"></span>SUMMERA
+        </a>
+        <button class="menu-bar-but" id="menu-bar-but">☰</button>
+    </nav>
+
+    <!-- MORE SHEET OVERLAY (Side Menu) -->
+    <div class="more-sheet-overlay" id="more-sheet-overlay">
+        <div class="more-sheet">
+            <a asp-controller="Home" asp-action="Index" class="overlay-link">Home</a>
+            <a asp-controller="Home" asp-action="About" class="overlay-link">About Us</a>
+            <a asp-controller="Hotels" asp-action="Index" class="overlay-link">Hotels</a>
+            <a asp-controller="Contact" asp-action="Index" class="overlay-link">Contact</a>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Profile" asp-action="Index" class="overlay-link">Profile</a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="overlay-link">Admin Panel</a>
+                }
+
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post" style="margin: 0;">
+                    <button type="submit" class="overlay-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:left; font-family:inherit; font-size:1.2rem; padding:.8rem 0;">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Register" class="overlay-link">Register</a>
+                <a asp-area="Identity" asp-page="/Account/Login" class="overlay-link">Login</a>
+            }
+
+            <button class="more-close" id="more-close">Close</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a asp-controller="Home" asp-action="Index" class="Logo">SUMMERA</a>
+                <p>Your gateway to luxury resorts and hotels across Egypt's most beautiful destinations.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Hotels" asp-action="Index">Hotels</a></li>
+                    <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                    <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; @DateTime.Now.Year SUMMERA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="~/js/1-main.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

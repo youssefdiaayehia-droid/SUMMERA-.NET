@@ -1,0 +1,95 @@
+﻿@using SUMMERA.Domain.Enums
+@model IEnumerable<SUMMERA.Domain.Entities.Booking>
+
+@{
+    ViewData["Title"] = "Manage Bookings";
+    var userEmails = ViewBag.UserEmails as Dictionary<string, string>;
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>📅 Bookings</h1>
+        <p>Manage all reservations across the platform</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="admin-alert admin-alert-success">✅ @TempData["Success"]</div>
+}
+
+<div class="admin-table-wrapper">
+    @if (Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>User</th>
+                    <th>Hotel / Room</th>
+                    <th>Dates</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td><strong>@booking.BookingReference</strong></td>
+                        <td>
+                            @if (userEmails != null && userEmails.ContainsKey(booking.UserId))
+                            {
+                                @userEmails[booking.UserId]
+                            }
+                            else
+                            {
+                                <span>Unknown User</span>
+                            }
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">@booking.Room?.Hotel?.Name</div>
+                            <div style="font-size: 0.8rem; color: #94a3b8;">@booking.Room?.RoomType (#@booking.Room?.RoomNumber)</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.85rem;">IN: @booking.CheckInDate.ToString("dd MMM yyyy")</div>
+                            <div style="font-size: 0.85rem;">OUT: @booking.CheckOutDate.ToString("dd MMM yyyy")</div>
+                            <div style="font-size: 0.75rem; color: #94a3b8;">(@booking.NumberOfNights nights)</div>
+                        </td>
+                        <td><strong style="color: #38bdf8;">$@booking.TotalPrice.ToString("0.00")</strong></td>
+                        <td>
+                            @{
+                                var badgeClass = booking.Status switch
+                                {
+                                    BookingStatus.Confirmed => "badge-success",
+                                    BookingStatus.Pending => "badge-warning",
+                                    BookingStatus.Cancelled => "badge-danger",
+                                    _ => "badge-info"
+                                };
+                            }
+                            <span class="admin-badge @badgeClass">@booking.Status</span>
+                        </td>
+                        <td>
+                            <form asp-action="UpdateStatus" method="post" style="display:flex; gap:0.5rem; align-items:center;">
+                                <input type="hidden" name="id" value="@booking.Id" />
+                                <select name="status" class="admin-form-group" style="padding: 0.4rem; border-radius: 6px; background: #0f172a; color: #fff; border: 1px solid #334155; font-size: 0.8rem;">
+                                    <option value="Pending" selected="@(booking.Status == BookingStatus.Pending)">Pending</option>
+                                    <option value="Confirmed" selected="@(booking.Status == BookingStatus.Confirmed)">Confirmed</option>
+                                    <option value="CheckedIn" selected="@(booking.Status == BookingStatus.CheckedIn)">Checked In</option>
+                                    <option value="CheckedOut" selected="@(booking.Status == BookingStatus.CheckedOut)">Checked Out</option>
+                                    <option value="Cancelled" selected="@(booking.Status == BookingStatus.Cancelled)">Cancelled</option>
+                                </select>
+                                <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No bookings found.</p>
+    }
+</div>

@@ -1,0 +1,83 @@
+﻿@using SUMMERA.Domain.Enums
+@model IEnumerable<SUMMERA.Domain.Entities.Booking>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>📊 Dashboard</h1>
+        <p>Welcome back, @User.Identity?.Name</p>
+    </div>
+</div>
+
+<div class="admin-cards-grid">
+    <div class="admin-stat-card">
+        <div class="stat-icon">🏨</div>
+        <div class="stat-value">@ViewBag.TotalHotels</div>
+        <div class="stat-label">Total Hotels</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="stat-icon">🛏️</div>
+        <div class="stat-value">@ViewBag.TotalRooms</div>
+        <div class="stat-label">Total Rooms</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value">@ViewBag.TotalBookings</div>
+        <div class="stat-label">Total Bookings</div>
+    </div>
+    <div class="admin-stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value">@ViewBag.TotalUsers</div>
+        <div class="stat-label">Total Users</div>
+    </div>
+</div>
+
+<div class="admin-table-wrapper">
+    <div style="padding: 1.5rem 1.5rem 0 1.5rem;">
+        <h2 style="color: #f8fafc; font-size: 1.2rem; margin: 0 0 1rem 0;">Recent Bookings</h2>
+    </div>
+    @if (Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Hotel</th>
+                    <th>Check-in</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@booking.BookingReference</td>
+                        <td>@booking.Room?.Hotel?.Name</td>
+                        <td>@booking.CheckInDate.ToString("dd MMM yyyy")</td>
+                        <td>
+                            @{
+                                var badgeClass = booking.Status switch
+                                {
+                                    BookingStatus.Confirmed => "badge-success",
+                                    BookingStatus.Pending => "badge-warning",
+                                    BookingStatus.Cancelled => "badge-danger",
+                                    _ => "badge-info"
+                                };
+                            }
+                            <span class="admin-badge @badgeClass">@booking.Status</span>
+                        </td>
+                        <td>$@booking.TotalPrice.ToString("0.00")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No bookings yet.</p>
+    }
+</div>

@@ -1,0 +1,107 @@
+﻿@model SUMMERA.Application.DTOs.ContactMessages.CreateContactMessageDto
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/contact.css" asp-append-version="true" />
+}
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+
+<!-- HERO -->
+<section class="Hero">
+    <h1>C<span class="login-o"></span>NTACT</h1>
+    <p>Get in Touch with Us<br>Have questions? We are here to help you 24/7.</p>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="contact-wrapper">
+
+    <!-- FORM -->
+    <div class="contact-form-box">
+        <h2>Send Us a Message</h2>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert-success">
+                ✅ @TempData["Success"]
+            </div>
+        }
+
+        <form asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name">Full Name</label>
+                <input asp-for="Name" placeholder="Your name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" type="email" placeholder="your@email.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Subject">Subject</label>
+                <input asp-for="Subject" placeholder="What is this about?" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message">Message</label>
+                <textarea asp-for="Message" placeholder="Write your message here..."></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </div>
+
+    <!-- INFO -->
+    <section class="information">
+        <h2>Contact Information</h2>
+
+        <div class="info-card">
+            <span class="info-icon">📍</span>
+            <div>
+                <h4>Location</h4>
+                <p>Cairo, Egypt</p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <span class="info-icon">📞</span>
+            <div>
+                <h4>Phone</h4>
+                <p>+20 123 456 7890</p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <span class="info-icon">✉️</span>
+            <div>
+                <h4>Email</h4>
+                <p>support@summera.com</p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <span class="info-icon">🕒</span>
+            <div>
+                <h4>Working Hours</h4>
+                <p>24/7 Customer Service</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

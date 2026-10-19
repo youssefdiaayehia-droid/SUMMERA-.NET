@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SUMMERA.Application.DTOs.Hotels.HotelDto>
+
+@{
+    ViewData["Title"] = "Hotels";
+    var selectedCity = ViewBag.City as string;
+    var selectedStars = ViewBag.Stars as int?;
+    var resultCount = (int)(ViewBag.ResultCount ?? 0);
+}
+
+<!-- BACKGROUND -->
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">LUXURY HOTELS</h1>
+        <p class="hero-subtitle">Premium stays & boutique hotels across Egypt</p>
+    </div>
+</section>
+
+<!-- SEARCH BAR -->
+<div class="search-container">
+    <form class="search-bar" method="get" asp-action="Index">
+        <div class="input-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" class="custom-input"
+                   placeholder="Any city" value="@selectedCity" />
+        </div>
+
+        <div class="input-group">
+            <label for="stars">Stars</label>
+            <select id="stars" name="stars" class="custom-input">
+                <option value="">Any</option>
+                <option value="3" selected="@(selectedStars == 3)">3 Stars</option>
+                <option value="4" selected="@(selectedStars == 4)">4 Stars</option>
+                <option value="5" selected="@(selectedStars == 5)">5 Stars</option>
+            </select>
+        </div>
+
+        <button type="submit" class="search-btn">
+            <span>&#128269;</span> Search
+        </button>
+
+        @if (!string.IsNullOrWhiteSpace(selectedCity) || selectedStars.HasValue)
+        {
+            <a asp-action="Index" class="search-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.4); text-decoration: none; color: #1e293b;">
+                ✕ Clear
+            </a>
+        }
+    </form>
+</div>
+
+<!-- RESULT COUNT -->
+@if (!string.IsNullOrWhiteSpace(selectedCity) || selectedStars.HasValue)
+{
+    <div style="text-align: center; margin: 1rem 0; color: #1e293b; font-weight: 600;">
+        Found @resultCount hotel(s)
+        @if (!string.IsNullOrWhiteSpace(selectedCity))
+        {
+            <span>in "@selectedCity"</span>
+        }
+    </div>
+}
+
+<!-- HOTELS LIST -->
+@if (!Model.Any())
+{
+    <div class="hotels-container">
+        <div style="text-align: center; padding: 3rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;">
+            <h3 style="color: #0369a1;">No hotels found</h3>
+            <p style="color: #1e293b;">Try adjusting your search criteria</p>
+            <a asp-action="Index" class="book-btn" style="margin-top: 1rem;">View All Hotels</a>
+        </div>
+    </div>
+}
+else
+{
+    foreach (var hotel in Model)
+    {
+        <section class="hotels-container">
+            <article class="hotel-card">
+                <div class="card-image-wrapper">
+                    <img src="@hotel.MainImageUrl" alt="@hotel.Name" class="hotel-img" />
+                    <span class="badge">@hotel.CityName</span>
+                </div>
+                <div class="card-details">
+                    <div class="card-header">
+                        <span class="stars">&#11088; @hotel.StarRating-Stars</span>
+                        <h2 class="hotel-name">@hotel.Name</h2>
+                        <p class="location">&#128205; @hotel.CityName</p>
+                        <p class="description">@hotel.Description</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">$@hotel.StartingPrice<span>/night</span></div>
+                        <a asp-action="Details" asp-route-id="@hotel.Id" class="book-btn">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </section>
+    }
+}

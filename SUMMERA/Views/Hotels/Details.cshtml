@@ -1,0 +1,82 @@
+﻿@model SUMMERA.Application.DTOs.Hotels.HotelDetailsDto
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="background">
+    <div class="bg-overlay"></div>
+</div>
+<!-- HERO IMAGE -->
+<section class="hotel-hero">
+    <div class="hero-image-wrapper">
+        <img src="@Model.MainImageUrl" alt="@Model.Name" class="hero-img" />
+    </div>
+</section>
+
+<!-- DETAILS -->
+<div class="details-container">
+
+    <div class="details-card">
+        <div class="stars">&#11088; @Model.StarRating-Stars</div>
+        <h1 class="hotel-title">@Model.Name</h1>
+        <p class="location">&#128205; @Model.Address, @Model.CityName</p>
+    </div>
+
+    <div class="details-card">
+        <h3>Description</h3>
+        <p class="description-text">@Model.Description</p>
+    </div>
+
+    @if (Model.Amenities != null && Model.Amenities.Any())
+    {
+        <div class="details-card">
+            <h3>Amenities</h3>
+            <div class="amenities-grid">
+                @foreach (var amenity in Model.Amenities)
+                {
+                    <div class="amenity-item">&#10004; @amenity</div>
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model.Rooms != null && Model.Rooms.Any())
+    {
+        <div class="details-card">
+            <h3>Available Rooms</h3>
+            <div class="rooms-grid">
+                @foreach (var room in Model.Rooms)
+                {
+                    <div class="room-card">
+                        <h4>@room.RoomType <small>#@room.RoomNumber</small></h4>
+                        <p class="room-desc">@room.Description</p>
+                        <p class="room-capacity">&#128101; Up to @room.Capacity guests</p>
+                        <div class="room-footer">
+                            <div class="price">
+                                <strong>$@room.PricePerNight</strong>
+                                <span>/night</span>
+                            </div>
+                            <a asp-controller="Booking" asp-action="Create"
+                               asp-route-roomId="@room.Id"
+                               class="book-btn">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="details-card">
+        <div class="reservation-box">
+            <div class="price-info">
+                <span>Starting from</span>
+                <strong>$@Model.StartingPrice / night</strong>
+            </div>
+            <a asp-controller="Hotels" asp-action="Index" class="book-btn reserve-btn">
+                Back to Hotels
+            </a>
+        </div>
+    </div>
+</div>
